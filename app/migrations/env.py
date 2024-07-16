@@ -9,6 +9,8 @@ from alembic import context
 from models.user import User
 from models.conversation import Conversation
 from models.message import Message
+from models.document import Document
+from models.split import Split
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
