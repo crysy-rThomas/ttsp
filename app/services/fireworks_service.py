@@ -14,7 +14,7 @@ class FireworksService:
     
         rag_split = rag(messages[-1]["content"])
 
-        preprompts = {"role":"system","content":f"Ta réponse doit être obligatoirement en français. Voici le résultat du RAG pour la question : {rag_split.content}"}
+        preprompts = {"role":"system","content":f"Ta réponse doit être obligatoirement en français. Voici le résultat de recherche effectué : {rag_split.content}"}
 
         messages = [preprompts] + messages
 
