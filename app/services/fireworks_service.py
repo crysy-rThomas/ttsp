@@ -2,6 +2,8 @@ import os
 import fireworks.client
 from dotenv import load_dotenv
 
+from helpers.rag import rag
+
 
 class FireworksService:
     def __init__(self):
@@ -9,7 +11,10 @@ class FireworksService:
         self.api_key = os.getenv("FIREWORKS_API_KEY")
 
     def inference(self, messages):
-        preprompts = {"role":"system","content":"Ta réponse doit être obligatoirement en français"}
+    
+        rag_split = rag(messages[-1]["content"])
+
+        preprompts = {"role":"system","content":f"Ta réponse doit être obligatoirement en français. Voici le résultat du RAG pour la question : {rag_split.content}"}
 
         messages = [preprompts] + messages
 
