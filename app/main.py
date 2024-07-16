@@ -4,11 +4,18 @@ from fastapi import Depends, FastAPI
 from routers.document_router import router as document_router
 from routers.conversation_router import router as conversation_router
 from routers.message_router import router as message_router
+from fastapi.middleware.cors import CORSMiddleware
 from routers.auth import auth_router
 from services.user import UserService
 
 app = FastAPI(swagger_ui_parameters={"persistAuthorization": True})
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["POST", "OPTIONS"],  # Allows only POST and OPTIONS
+    allow_headers=["*"],  # Allows all headers
+)
 
 @app.get("/")
 async def root():
