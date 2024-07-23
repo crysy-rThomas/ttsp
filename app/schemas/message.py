@@ -6,7 +6,6 @@ from models.message import Message
 
 class MessageSchemaCreate(BaseModel):
     content: str
-    conversation_id: int
     role: Message.RoleMessage
 
     class Config:

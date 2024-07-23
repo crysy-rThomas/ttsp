@@ -13,25 +13,25 @@ class MessageServiceImpl:
     def get_message(self, message_id: int) -> Message:
         return self.message_repository.get(message_id)
 
-    def create_message(self, message: MessageSchemaCreate) -> Message:
+    def create_message(self, message: MessageSchemaCreate, conversation_id) -> Message:
         msg = Message(
             content=message.content,
-            conversation_id=message.conversation_id,
-            index=self.count_message(message.conversation_id) + 1,
+            conversation_id=conversation_id,
+            index=self.count_message(conversation_id) + 1,
             role=message.role,
         )
         resp = self.message_repository.create(msg)
 
         if message.role == "user":
-            history = self.get_all_message(message.conversation_id)
+            history = self.get_all_message(conversation_id)
             history = format_history(history)
             response = self.fireworks_service.inference(history)
             assisant_msg = MessageSchemaCreate(
                 content=response,
-                conversation_id=message.conversation_id,
+                conversation_id=conversation_id,
                 role="assistant"
             )
-            return self.create_message(assisant_msg)
+            return self.create_message(assisant_msg, conversation_id)
         return resp
 
     def get_all_message(self, conversation_id: int):

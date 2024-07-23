@@ -8,9 +8,11 @@ auth_router = APIRouter()
 user_service = UserService()
 
 
-@auth_router.post("/signup", response_model=UserSchema)
+@auth_router.post("/signup", response_model=UserTokenResponse)
 async def create_user(user: UserSchema):
-    return user_service.create_user(user)
+    user_service.create_user(user)
+    from_data = OAuth2PasswordRequestForm(username=user.username, password=user.password)
+    return user_service.login_user(from_data)
 
 
 @auth_router.post("/login", response_model=UserTokenResponse)

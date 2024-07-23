@@ -39,3 +39,8 @@ def get_all_conversation(
 def delete_conversation(conversation_id: int):
     conversation_service.delete_conversation(conversation_id)
     return {"message": "Conversation deleted successfully"}
+
+
+@router.get("/conversation/{conversation_id}/lastMessage")
+def get_last_message(conversation_id: int):
+    return conversation_service.get_last_message(conversation_id)

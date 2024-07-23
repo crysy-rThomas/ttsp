@@ -14,8 +14,9 @@ message_service = MessageServiceImpl()
 @router.post("/{conversation_id}/messages")
 def create_message(
     message: MessageSchemaCreate,
+    conversation_id: int,
 ):
-    return message_service.create_message(message)
+    return message_service.create_message(message, conversation_id)
 
 
 @router.get("/{conversation_id}/messages")
