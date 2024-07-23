@@ -18,7 +18,7 @@ def rag(query):
 
     query_vector = embed(query, "Snowflake/snowflake-arctic-embed-s").flatten().reshape(1, -1)
     print("Question", query)
-    similarity_threshold = 0.7
+    similarity_threshold = 0.75
 
     similarities = cosine_similarity(vectors, query_vector)
 
