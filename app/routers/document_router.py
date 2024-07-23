@@ -26,3 +26,7 @@ def get_document(document_id: int):
 @router.delete("/document/{document_id}")
 def delete_document(document_id: int):
     return document_service.delete_document(document_id)
+
+@router.get("/documents")
+def get_all_document():
+    return document_service.get_all_document()

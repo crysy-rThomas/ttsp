@@ -49,3 +49,6 @@ class DocumentServiceImpl:
 
     def delete_document(self, document_id: int):
         return self.document_repository.delete(document_id)
+
+    def get_all_document(self):
+        return self.document_repository.get_all()

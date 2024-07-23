@@ -34,3 +34,6 @@ class DocumentRepository:
             self.db.rollback()
             raise e
         return document
+    
+    def get_all(self):
+        return self.db.query(Document).all()
