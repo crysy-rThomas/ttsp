@@ -14,3 +14,7 @@ class DocumentWriteSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+class DocumentWriteManualSchema(BaseModel):
+    name: str
+    content: str

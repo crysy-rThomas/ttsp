@@ -1,14 +1,10 @@
+from uuid import UUID
 from fastapi import UploadFile
-from helpers.embeding import embed
 from services.split_service import SplitServiceImpl
-from helpers.topic_detector import topic_detector
-from models.split import Split
-from helpers.partition import partition
+from helpers.partition import partition, split_content
 from repositories.document_repository import DocumentRepository
 from models.document import Document
-from schemas.document import DocumentWriteSchema
-
-ARCTIC = "Snowflake/snowflake-arctic-embed-s"
+from schemas.document import DocumentWriteManualSchema, DocumentWriteSchema
 
 
 class DocumentServiceImpl:
@@ -24,31 +20,33 @@ class DocumentServiceImpl:
         # create split
         splits = partition(file)
 
-        splits = topic_detector(splits)
+        self.split_service.process_split(splits, doc)
 
-        for index, split in enumerate(splits):
-            topic, content = split[0], split[1]
-
-            topic_vector = embed(topic, ARCTIC).flatten()
-            content_vector = embed(content, ARCTIC).flatten()
-
-            split = Split(
-                index=index,
-                topic=topic,
-                content=content,
-                topic_vector=topic_vector,
-                content_vector=content_vector,
-                document_id=doc.id,
-
-            )
-            self.split_service.create_split(split)
         return doc
 
-    def get_document(self, document_id: int):
+    def get_document(self, document_id: UUID):
         return self.document_repository.get(document_id)
 
-    def delete_document(self, document_id: int):
+    def delete_document(self, document_id: UUID):
         return self.document_repository.delete(document_id)
 
     def get_all_document(self):
         return self.document_repository.get_all()
+
+    def get_document_content(self, document_id: UUID):
+        splits = self.split_service.get_all_splits(document_id)
+        content = ""
+        for split in splits:
+            content += split.content + " "
+        return content
+
+    def create_document_manual(self, document_schema: DocumentWriteManualSchema):
+        document = Document(
+            name=document_schema.name,
+        )
+        doc = self.document_repository.create_document(document)
+        # create split
+        splits = split_content(document_schema.content)
+        self.split_service.process_split(splits, doc)
+
+        return doc

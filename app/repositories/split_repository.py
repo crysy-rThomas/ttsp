@@ -2,6 +2,7 @@ from models.split import Split
 from infrastructure.database import get_db
 from sqlalchemy.orm import Session
 
+
 class SplitRepository:
     def __init__(self):
         db: Session = next(get_db())
@@ -16,13 +17,9 @@ class SplitRepository:
             self.db.rollback()
             raise e
         return _split
-    
+
     def get(self, split_id: int):
-        return (
-            self.db.query(Split)
-            .filter(Split.id == split_id)
-            .first()
-        )
-    
-    def get_all(self):
-        return self.db.query(Split).all()
+        return self.db.query(Split).filter(Split.id == split_id).first()
+
+    def get_all(self, document_id):
+        return self.db.query(Split).filter(Split.document_id == document_id).all()
