@@ -10,3 +10,20 @@ services:
     network_mode: bridge
     extra_hosts:
       - host.docker.internal:host-gateway
+  
+  fastapi:
+    build:
+      context: .
+      target: dev
+    container_name: fastapi
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_REFRESH_SECRET_KEY: ${JWT_REFRESH_SECRET_KEY}
+      FIREWORKS_API_KEY: ${FIREWORKS_API_KEY}
+    ports:
+      - 8000:80
+    restart: unless-stopped
+    network_mode: bridge
+    extra_hosts:
+      - host.docker.internal:host-gateway
