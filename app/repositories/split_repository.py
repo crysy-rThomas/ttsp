@@ -21,5 +21,8 @@ class SplitRepository:
     def get(self, split_id: int):
         return self.db.query(Split).filter(Split.id == split_id).first()
 
-    def get_all(self, document_id):
+    def get_all(self):
+        return self.db.query(Split).all()
+
+    def get_all_doc_splits(self, document_id ):
         return self.db.query(Split).filter(Split.document_id == document_id).all()

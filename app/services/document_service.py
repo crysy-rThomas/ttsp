@@ -34,7 +34,7 @@ class DocumentServiceImpl:
         return self.document_repository.get_all()
 
     def get_document_content(self, document_id: UUID):
-        splits = self.split_service.get_all_splits(document_id)
+        splits = self.split_service.get_all_doc_splits(document_id)
         content = ""
         for split in splits:
             content += split.content + " "

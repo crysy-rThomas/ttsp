@@ -17,8 +17,11 @@ class SplitServiceImpl:
     def create_split(self, split: Split) -> Split:
         return self.split_repository.create(split)
 
-    def get_all_splits(self, document_id: UUID) -> List[Split]:
-        return self.split_repository.get_all(document_id)
+    def get_all_doc_splits(self, document_id: UUID) -> List[Split]:
+        return self.split_repository.get_all_doc_splits(document_id)
+    
+    def get_all_splits(self) -> List[Split]:
+        return self.split_repository.get_all()
     
     def process_split(self, splits: Split, doc: Document):
         splits = topic_detector(splits)
