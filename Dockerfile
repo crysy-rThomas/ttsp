@@ -13,7 +13,7 @@ RUN useradd -m myuser
 WORKDIR /code
 
 # Copy requirements files
-COPY ./requirements /code/requirements
+COPY requirements.txt /code/requirements.txt
 
 # Stage 2: Development Stage
 FROM base AS dev
@@ -23,7 +23,7 @@ RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 
 # Install development requirements
-RUN pip install --no-cache-dir --upgrade -r /code/requirements/local.txt
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 # Copy application code
 COPY ./app /code/app
