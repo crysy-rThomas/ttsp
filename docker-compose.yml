@@ -8,6 +8,8 @@ services:
     ports:
       - 5432:5432
     network_mode: bridge
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     extra_hosts:
       - host.docker.internal:host-gateway
   
@@ -27,3 +29,6 @@ services:
     network_mode: bridge
     extra_hosts:
       - host.docker.internal:host-gateway
+
+volumes:
+  pgdata:
