@@ -8,7 +8,8 @@ def rag(query):
     split_service = SplitServiceImpl()
 
     splits = split_service.get_all_splits()
-
+    if not splits:
+        return []
     topic_vectors = []
     content_vectors = []
     for split in splits:
