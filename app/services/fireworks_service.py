@@ -15,14 +15,14 @@ class FireworksService:
         rag_split = rag(messages[-1]["content"])
         if rag_split != []:  # Check if rag_split is not an empty list
             preprompts = {
-                "role": "system",
-                "content": f"Ta réponse doit être obligatoirement en français. Voici le résultat de recherche effectué : {rag_split.content}"
+                "role": "assistant",
+                "content": f"Ma réponse doit être obligatoirement en français. Voici le résultat de recherche effectué : {rag_split.content}"
             }
             print('utilisation du rag')
         else:
             preprompts = {
-                "role": "system",
-                "content": "Ta réponse doit être obligatoirement en français."
+                "role": "assistant",
+                "content": "Ma réponse doit être obligatoirement en français."
             }
             print('pas de rag')
         messages = [preprompts] + messages
