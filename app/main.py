@@ -8,7 +8,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers.auth import auth_router
 from services.user import UserService
 
-app = FastAPI(swagger_ui_parameters={"persistAuthorization": True})
+app = FastAPI(
+    swagger_ui_parameters={"persistAuthorization": True},
+    docs_url=None,  # Disable Swagger UI
+    redoc_url=None,  # Disable ReDoc
+    openapi_url=None  # Disable OpenAPI schema
+)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allows all origins
