@@ -3,6 +3,8 @@ import fireworks.client
 from dotenv import load_dotenv
 
 from helpers.rag import rag
+import requests
+import json
 
 
 class FireworksService:
@@ -17,27 +19,34 @@ class FireworksService:
             # Assuming rag_split is expected to contain only one item when not empty
             preprompts = {
                 "role": "system",
-                "content": f"Ta réponse doit être obligatoirement en français. Voici le résultat de recherche effectué : {rag_split.content}"
+                "content": f"Ta réponse doit être obligatoirement en français. Voici le résultat de recherche effectué : {rag_split.content}",
             }
-            print('utilisation du rag')
+            print("utilisation du rag")
         else:
             # Handle the case when rag_split is empty
             # For example, set a default message or perform some other action
             preprompts = {
                 "role": "system",
-                "content": "Ta réponse doit être obligatoirement en français."
+                "content": "Ta réponse doit être obligatoirement en français.",
             }
-            print('pas de rag')
+            print("pas de rag")
         messages = [preprompts] + messages
 
-        completion = fireworks.client.ChatCompletion.create(
-            model="accounts/fireworks/models/mixtral-8x7b-instruct",
-            messages=messages,
-            stream=False,
-            n=1,
-            max_tokens=4096,
-            temperature=0.6,
-            stop=[],
-        )
-        message = completion.choices[0].message.content
+        url = "https://api.fireworks.ai/inference/v1/chat/completions"
+        payload = {
+            "model": "accounts/fireworks/models/mixtral-8x7b-instruct",
+            "max_tokens": 4096,
+            "top_p": 1,
+            "top_k": 40,
+            "presence_penalty": 0,
+            "frequency_penalty": 0,
+            "temperature": 0.6,
+            "messages": messages,
+        }
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + self.api_key,
+        }
+        message = requests.request("POST", url, headers=headers, data=json.dumps(payload))
         return message
