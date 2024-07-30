@@ -16,7 +16,7 @@ def rag(query):
         content_vectors.append(split.content_vector)
     vectors = topic_vectors + content_vectors
 
-    query_vector = embed(query, "Snowflake/snowflake-arctic-embed-s").flatten().reshape(1, -1)
+    query_vector = embed(query, "Snowflake/snowflake-arctic-embed-s").flatten()
     print("Question", query)
     similarity_threshold = 0.75
 
