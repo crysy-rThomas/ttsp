@@ -1,10 +1,8 @@
 import os
-import fireworks.client
-from dotenv import load_dotenv
-
-from helpers.rag import rag
 import requests
 import json
+from dotenv import load_dotenv
+from helpers.rag import rag
 
 
 class FireworksService:
@@ -13,7 +11,6 @@ class FireworksService:
         self.api_key = os.getenv("FIREWORKS_API_KEY")
 
     def inference(self, messages):
-
         rag_split = rag(messages[-1]["content"])
         if rag_split != []:  # Check if rag_split is not an empty list
             # Assuming rag_split is expected to contain only one item when not empty
@@ -46,7 +43,10 @@ class FireworksService:
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + self.api_key,
+            "Authorization": f"Bearer {self.api_key}",
         }
-        message = requests.request("POST", url, headers=headers, data=json.dumps(payload))
-        return message
+
+        response = requests.post(url, headers=headers, json=payload)
+        if response.status_code != 200:
+            raise Exception(f"Request failed: {response.status_code} - {response.text}")
+        return response.json()
