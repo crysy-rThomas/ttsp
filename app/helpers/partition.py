@@ -1,6 +1,6 @@
 import tiktoken
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
+import csv
 
 def partition(file):
     file_extension = file.filename.split(".")[-1]
@@ -8,7 +8,16 @@ def partition(file):
         # openfile
         with file.file as f:
             data = f.read().decode("utf-8")
-    splits = split_content(data)
+        splits = split_content(data)
+    elif file_extension == "csv":
+        # open file
+        splits = []
+        with file.file as f:
+            content = f.read().decode("utf-8")
+            csv_reader = csv.reader(content.splitlines())
+            for row in csv_reader:
+                splits.append(row[0])
+    
     return splits
 
 

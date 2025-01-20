@@ -8,10 +8,11 @@ fireworks.client.api_key = os.getenv("FIREWORKS_API_KEY")
 
 
 def topic_detector(text):
-    preprompts = "Ta réponse doit être obligatoirement en français, je te donne du texte, Je souhaite que tu me donnes en une seul phrase le topic de mon texte sous du format 'Topic : Contenu du topic', par exemple : 'Topic : Connexion d'un Pad Serveur à une caisse centrale AirKitchen.'"  # noqa: E501
+    preprompts = "I give you some text, i want you to give the topic in one sentence of this text with this format: 'Topic : Contenu du topic', for exemple : 'Topic : Connection from a phone to a PC.'"  # noqa: E501
     res = []
 
     for para in text:
+        print(para)
         completion = fireworks.client.ChatCompletion.create(
             model="accounts/fireworks/models/mixtral-8x7b-instruct",
             messages=[
