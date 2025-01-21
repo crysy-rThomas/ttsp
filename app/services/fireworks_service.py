@@ -37,4 +37,4 @@ class FireworksService:
             stop=[],
         )
         message = completion.choices[0].message.content
-        return message
+        return message, rag_split
