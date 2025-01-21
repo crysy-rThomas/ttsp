@@ -1,30 +1,30 @@
 services:
-  db:
+  db-mja:
     image: pgvector/pgvector:pg16
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - 5432:5432
+      - 5433:5432
     network_mode: bridge
     volumes:
       - pgdata:/var/lib/postgresql/data
     extra_hosts:
       - host.docker.internal:host-gateway
-  
-  fastapi:
+
+  fastapi-mja:
     build:
       context: .
       target: dev
-    container_name: fastapi
+    container_name: fastapi-mja
     environment:
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       JWT_REFRESH_SECRET_KEY: ${JWT_REFRESH_SECRET_KEY}
       FIREWORKS_API_KEY: ${FIREWORKS_API_KEY}
     ports:
-      - 8000:80
+      - 8001:80
     restart: unless-stopped
     network_mode: bridge
     extra_hosts:
