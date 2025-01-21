@@ -31,8 +31,8 @@ class MessageServiceImpl:
                 conversation_id=conversation_id,
                 role="assistant"
             )
-            return self.create_message(assisant_msg, conversation_id)
-        return resp , source
+            return [self.create_message(assisant_msg, conversation_id), source.content]
+        return resp
 
     def get_all_message(self, conversation_id: int):
         return self.message_repository.get_all(conversation_id)

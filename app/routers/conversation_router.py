@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends
-from dependency_injector.wiring import inject, Provide
 from services.conversation_service import ConversationServiceImpl
 from schemas.user import UserTokenPayload
 from services.user import UserService
